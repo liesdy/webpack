@@ -5,16 +5,28 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   entry: {
     app: './src/index.js',
-    print: './src/print.js'
+    // print: './src/print.js'
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: '管理输出'
+      title: 'Caching'
     })
   ],
   output: {
-    filename: '[name].main.js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist')
+  },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   }
 };
